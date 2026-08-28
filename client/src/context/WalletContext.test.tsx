@@ -47,13 +47,13 @@ describe("WalletContext — restore flow", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
-    // @ts-ignore
+    // @ts-expect-error - testing window.freighter assignment
     window.freighter = mockFreighter;
   });
 
   afterEach(() => {
     localStorage.clear();
-    // @ts-ignore
+    // @ts-expect-error - testing window.freighter deletion
     delete window.freighter;
   });
 

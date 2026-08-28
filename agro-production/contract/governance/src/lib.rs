@@ -384,7 +384,13 @@ impl GovernanceContract {
 
         env.events().publish(
             (t_governance(), symbol_short!("proposed")),
-            (EVENT_SCHEMA_VERSION, id, proposer, target_contract, function_name),
+            (
+                EVENT_SCHEMA_VERSION,
+                id,
+                proposer,
+                target_contract,
+                function_name,
+            ),
         );
         Ok(id)
     }
@@ -459,8 +465,10 @@ impl GovernanceContract {
         if proposal.votes_for < quorum || proposal.votes_for <= proposal.votes_against {
             proposal.status = ProposalStatus::Rejected;
             save_proposal(&env, &proposal);
-            env.events()
-                .publish((t_governance(), symbol_short!("rejected")), (EVENT_SCHEMA_VERSION, proposal_id));
+            env.events().publish(
+                (t_governance(), symbol_short!("rejected")),
+                (EVENT_SCHEMA_VERSION, proposal_id),
+            );
             return Ok(());
         }
 
@@ -468,8 +476,10 @@ impl GovernanceContract {
         proposal.queued_at = env.ledger().timestamp();
         save_proposal(&env, &proposal);
 
-        env.events()
-            .publish((t_governance(), symbol_short!("queued")), (EVENT_SCHEMA_VERSION, proposal_id));
+        env.events().publish(
+            (t_governance(), symbol_short!("queued")),
+            (EVENT_SCHEMA_VERSION, proposal_id),
+        );
         Ok(())
     }
 
@@ -500,8 +510,10 @@ impl GovernanceContract {
         proposal.status = ProposalStatus::Cancelled;
         save_proposal(&env, &proposal);
 
-        env.events()
-            .publish((t_governance(), symbol_short!("cancelled")), (EVENT_SCHEMA_VERSION, proposal_id));
+        env.events().publish(
+            (t_governance(), symbol_short!("cancelled")),
+            (EVENT_SCHEMA_VERSION, proposal_id),
+        );
         Ok(())
     }
 
@@ -628,8 +640,10 @@ impl GovernanceContract {
                 return Err(GovernanceError::NotPaused);
             }
             env.storage().instance().set(&DataKey::Paused, &false);
-            env.events()
-                .publish((t_governance(), symbol_short!("unpausd")), (EVENT_SCHEMA_VERSION,));
+            env.events().publish(
+                (t_governance(), symbol_short!("unpausd")),
+                (EVENT_SCHEMA_VERSION,),
+            );
             Ok(())
         } else if *function_name == Symbol::new(env, "migrate") {
             let stored: u32 = env
@@ -697,8 +711,10 @@ impl GovernanceContract {
             return Err(GovernanceError::AlreadyPaused);
         }
         env.storage().instance().set(&DataKey::Paused, &true);
-        env.events()
-            .publish((t_governance(), symbol_short!("paused")), (EVENT_SCHEMA_VERSION, caller));
+        env.events().publish(
+            (t_governance(), symbol_short!("paused")),
+            (EVENT_SCHEMA_VERSION, caller),
+        );
         Ok(())
     }
 

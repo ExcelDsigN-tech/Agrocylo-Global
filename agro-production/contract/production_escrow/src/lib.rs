@@ -2439,12 +2439,12 @@ fn release_tranche_internal(
 }
 
 #[cfg(test)]
+mod cost_harness_tests;
+#[cfg(test)]
 mod invariant_tests;
+#[cfg(test)]
+mod pause_gating_tests;
 #[cfg(test)]
 mod state_machine_tests;
 #[cfg(test)]
 mod test;
-#[cfg(test)]
-mod pause_gating_tests;
-#[cfg(test)]
-mod cost_harness_tests;

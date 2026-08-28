@@ -278,8 +278,10 @@ impl InvestmentBasketContract {
         require_governed_caller(&env, &caller)?;
         env.deployer()
             .update_current_contract_wasm(new_wasm_hash.clone());
-        env.events()
-            .publish((t_basket(), symbol_short!("upgraded")), (EVENT_SCHEMA_VERSION, new_wasm_hash));
+        env.events().publish(
+            (t_basket(), symbol_short!("upgraded")),
+            (EVENT_SCHEMA_VERSION, new_wasm_hash),
+        );
         Ok(())
     }
 
@@ -322,8 +324,10 @@ impl InvestmentBasketContract {
             return Err(BasketError::AlreadyPaused);
         }
         env.storage().instance().set(&DataKey::Paused, &true);
-        env.events()
-            .publish((t_basket(), symbol_short!("paused")), (EVENT_SCHEMA_VERSION, caller));
+        env.events().publish(
+            (t_basket(), symbol_short!("paused")),
+            (EVENT_SCHEMA_VERSION, caller),
+        );
         Ok(())
     }
 
@@ -343,8 +347,10 @@ impl InvestmentBasketContract {
             return Err(BasketError::NotPaused);
         }
         env.storage().instance().set(&DataKey::Paused, &false);
-        env.events()
-            .publish((t_basket(), symbol_short!("unpausd")), (EVENT_SCHEMA_VERSION, caller));
+        env.events().publish(
+            (t_basket(), symbol_short!("unpausd")),
+            (EVENT_SCHEMA_VERSION, caller),
+        );
         Ok(())
     }
 
@@ -663,7 +669,13 @@ impl InvestmentBasketContract {
 
         env.events().publish(
             (t_basket(), symbol_short!("funded")),
-            (EVENT_SCHEMA_VERSION, basket_id, basket.total_deposit, basket.total_invested, basket.total_skipped),
+            (
+                EVENT_SCHEMA_VERSION,
+                basket_id,
+                basket.total_deposit,
+                basket.total_invested,
+                basket.total_skipped,
+            ),
         );
         Ok(())
     }

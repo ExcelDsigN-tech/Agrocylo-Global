@@ -116,21 +116,12 @@ fn cost_harness_batch_refund_investors_50_investors() {
     const BATCH_SIZE: usize = 50;
 
     let test_env = setup_cost_test_env(BATCH_SIZE);
-    print_cost_header(
-        "batch_refund_investors",
-        BATCH_SIZE,
-        "investors (max cap)",
-    );
+    print_cost_header("batch_refund_investors", BATCH_SIZE, "investors (max cap)");
 
     // Create a campaign
     let campaign_id: u64 = test_env
         .client
-        .create_campaign(
-            &test_env.farmer,
-            &test_env.token_id,
-            &100_000,
-            &9999999999,
-        )
+        .create_campaign(&test_env.farmer, &test_env.token_id, &100_000, &9999999999)
         .unwrap();
 
     // Invest from all 50 investors
@@ -139,7 +130,9 @@ fn cost_harness_batch_refund_investors_50_investors() {
     }
 
     // Mark campaign as failed to enable refunds
-    test_env.client.mark_campaign_failed(&test_env.admin, &campaign_id, &false);
+    test_env
+        .client
+        .mark_campaign_failed(&test_env.admin, &campaign_id, &false);
 
     // Prepare list of all investors for batch refund
     let investor_addrs: Vec<Address> = test_env.investors.clone().try_into().unwrap_or_default();
@@ -147,7 +140,10 @@ fn cost_harness_batch_refund_investors_50_investors() {
     // Measure cost of batch_refund_investors
     let cost_estimate = test_env.env.cost_estimate();
 
-    let result = test_env.client.try_batch_refund_investors(&test_env.admin, &campaign_id, &investor_addrs);
+    let result =
+        test_env
+            .client
+            .try_batch_refund_investors(&test_env.admin, &campaign_id, &investor_addrs);
 
     if let Ok(_) = result {
         let resources = cost_estimate.resources();
@@ -288,7 +284,9 @@ fn cost_harness_summary() {
     println!("  • get_campaigns pagination (e.g., 50 per page)");
     println!("");
     println!("Notes:");
-    println!("  - These tests are scaffolding; actual cargo test execution will produce real numbers");
+    println!(
+        "  - These tests are scaffolding; actual cargo test execution will produce real numbers"
+    );
     println!("  - Mock setup may not perfectly reflect live contract state (different ledger size, etc.)");
     println!("  - Results are indicative and should be verified via integration tests on testnet");
     println!("");

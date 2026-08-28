@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { AlertTriangle } from "lucide-react";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { logger } from "@/lib/logger";
 
@@ -47,7 +48,7 @@ export default function Error({
           Try again
         </Button>
         <Button asChild>
-          <a href="/">Go home</a>
+          <Link href="/">Go home</Link>
         </Button>
       </div>
     </div>

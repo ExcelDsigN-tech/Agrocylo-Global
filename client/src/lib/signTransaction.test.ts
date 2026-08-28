@@ -19,7 +19,10 @@ vi.mock("./testMode", () => ({
 import FreighterApi from "@stellar/freighter-api";
 
 describe("signTransaction — network passphrase resolution", () => {
-  const mockFreighterApi = FreighterApi as any;
+  const mockFreighterApi = FreighterApi as unknown as {
+    getNetworkDetails: ReturnType<typeof vi.fn>;
+    signTransaction: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -78,7 +81,10 @@ describe("signTransaction — network passphrase resolution", () => {
 });
 
 describe("signTransaction — no silent testnet fallback", () => {
-  const mockFreighterApi = FreighterApi as any;
+  const mockFreighterApi = FreighterApi as unknown as {
+    getNetworkDetails: ReturnType<typeof vi.fn>;
+    signTransaction: ReturnType<typeof vi.fn>;
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();

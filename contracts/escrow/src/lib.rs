@@ -273,7 +273,12 @@ const DEFAULT_MAX_SLIPPAGE_BPS: u32 = 100; // 1%
 /// fixed alongside this). Restored to match the identical helper already
 /// present on `production_escrow`/`registry`/`investment_basket`/`governance`.
 fn require_not_paused(env: &Env) -> Result<(), EscrowError> {
-    if env.storage().instance().get(&DataKey::Paused).unwrap_or(false) {
+    if env
+        .storage()
+        .instance()
+        .get(&DataKey::Paused)
+        .unwrap_or(false)
+    {
         return Err(EscrowError::ContractPaused);
     }
     Ok(())
